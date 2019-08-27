@@ -19,11 +19,11 @@ module button(){
   intersection(){
     union(){
       translate([0,0,chamfer_diameter/2.0]) hull(){
-       translate([0,0,9.0-chamfer_diameter]) torus(torus_diameter/2,chamfer_diameter/2.0,128,32);
+       translate([0,0,8.0-chamfer_diameter]) torus(torus_diameter/2,chamfer_diameter/2.0,128,32);
        torus(torus_diameter/2,chamfer_diameter/2.0,128,32);
       }
     }
-    rotate([0,10,0]) cylinder(h=18, d=button_diameter*2, $fn=64, center=true);
+    rotate([0,10,0]) cylinder(h=16, d=button_diameter*2, $fn=64, center=true);
   }
 }
 
@@ -278,5 +278,5 @@ module shell(){
 //--Render--------------------------------------------------------------------------------------
 
 clip();
-shell();
+//shell();
 //rotate([180,0,0]) shell();
