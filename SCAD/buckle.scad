@@ -104,7 +104,7 @@ module clip_parta(){
       difference(){
         clip_main();
         scale([1,1,2]) diffcell();
-        scale([1,button_elliptical,1]) cylinder(h=10,d=button_diameter+0.7,$fn=128);
+        scale([1,button_elliptical,1]) cylinder(h=10,d=button_diameter+1.4,$fn=128);
       }
       button_tab();
     }
