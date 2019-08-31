@@ -1,6 +1,7 @@
 include <meso_stretchy.scad>;
 
-button_diameter = 20;
+button_diameter = 15;
+button_elliptical = 1.25;
 chamfer_diameter = 5.5;
 channel_width = 4.0;
 tolerance = 0.5;
@@ -14,8 +15,8 @@ slit_seperation = (button_diameter/4)/slit_count;
 generate_clip_meso  = true;
 generate_shell_meso = true;
 mesosegs   = 30;
-mesoradius = 2;
-mesobands  = 3;
+mesoradius = 2.25;
+mesobands  = 4;
 
 //--Clip----------------------------------------------------------------------------------------
 
@@ -72,7 +73,7 @@ module button_tab(){
           translate([button_diameter/2,button_diameter/2,0]) cylinder(h=3, d=button_diameter/2,$fn=64);
         }
       }
-      button();
+      scale([1,button_elliptical,1]) button();
     }
 }
 
@@ -103,6 +104,7 @@ module clip_parta(){
       difference(){
         clip_main();
         scale([1,1,2]) diffcell();
+        scale([1,button_elliptical,1]) cylinder(h=10,d=button_diameter+0.7,$fn=128);
       }
       button_tab();
     }
@@ -178,14 +180,15 @@ module clip_back(){
 module clip(){
 
   clip_width = 1.5*button_diameter + chamfer_diameter;
-  mesowidth = mesosegs * (mesoradius-0.8);
+  mesothick = 0.75;
+  mesowidth = mesosegs * (mesoradius-mesothick);
 
   union(){
     clip_parta();
     if (generate_clip_meso==false){
       translate([-button_diameter+button_diameter/4 - channel_width/2 -3 -chamfer_diameter/2,0,0]) clip_back();
     } else {
-      translate([-button_diameter+button_diameter/4,0,0]) rotate([0,0,180]) translate([0,-clip_width/2,0]) mesoStretch(mesosegs,mesobands,mesodiam=mesoradius, mesodis=(clip_width/mesobands)-mesoradius,mesoheight=6);
+      translate([-button_diameter+button_diameter/4,0,0]) rotate([0,0,180]) translate([0,-clip_width/2,0]) mesoStretch(mesosegs,mesobands,mesodiam=mesoradius, mesodis=(clip_width/mesobands)-mesoradius,mesoheight=6,mesowidth=mesothick);
       translate([-mesowidth -button_diameter+button_diameter/4 - channel_width/2 -3 ,0,0]) clip_back();
     }
   }
@@ -230,8 +233,9 @@ module shell_base(){
     }
     translate([0,0,0]) clip_main(tolerance);
     translate([0,0,-chamfer_diameter/2]) shell_diff(-2);
-    cylinder(h=10,d=button_diameter+1,$fn=128);
-    translate([0,0,8]) cylinder(h=10,d1=button_diameter+1,d2=button_diameter*1.5+1,$fn=128);
+    scale([1,button_elliptical,1]) cylinder(h=10,d=button_diameter+0.7,$fn=128);
+    scale([1,button_elliptical,1]) translate([0,0,8]) cylinder(h=10,d1=button_diameter+0.7,d2=button_diameter*1.5+0.7,$fn=128);
+    translate([-button_diameter+button_diameter/4,0,6]) rotate([90,0,0]) cylinder(h=button_diameter*button_elliptical+0.7,d=2,$fn=4,center=true);
   }
 }
 
@@ -289,7 +293,8 @@ module shell_back(){
 module shell(){
 
   clip_width = 1.5*button_diameter + chamfer_diameter;
-  mesowidth = mesosegs * (mesoradius-0.8);
+  mesothick = 0.75;
+  mesowidth = mesosegs * (mesoradius-mesothick);
 
   union(){
     shell_base();
@@ -297,7 +302,7 @@ module shell(){
     if (generate_shell_meso==false){
       translate([button_diameter+channel_width/2+3+chamfer_diameter+tolerance,0,9]) rotate([0,180,0]) shell_back();
     }else{
-      translate([button_diameter+chamfer_diameter/2+tolerance,0,3]) translate([0,-clip_width/2,0]) mesoStretch(mesosegs,mesobands,mesodiam=mesoradius, mesodis=(clip_width/mesobands)-mesoradius,mesoheight=6);
+      translate([button_diameter+chamfer_diameter/2+tolerance,0,3]) translate([0,-clip_width/2,0]) mesoStretch(mesosegs,mesobands,mesodiam=mesoradius, mesodis=(clip_width/mesobands)-mesoradius,mesoheight=6,mesowidth=mesothick);
       translate([mesowidth+button_diameter+channel_width/2+chamfer_diameter,0,9]) rotate([0,180,0]) shell_back();
     }
   }
