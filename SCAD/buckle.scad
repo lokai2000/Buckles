@@ -1,20 +1,20 @@
 include <meso_stretchy.scad>;
 
-button_diameter = 15;
-button_elliptical = 1.25;
+button_diameter = 16;
+button_elliptical = 1.2;
 chamfer_diameter = 5.5;
 channel_width = 4.0;
 tolerance = 0.5;
 
 generate_slits = true;
-slit_count = 3;
+slit_count = 1;
 slit_width = 1.2;
 slit_seperation = (button_diameter/4)/slit_count;
 
 
-generate_clip_meso  = true;
-generate_shell_meso = true;
-mesosegs   = 30;
+generate_clip_meso  = false;
+generate_shell_meso = false;
+mesosegs   = 90;
 mesoradius = 2.25;
 mesobands  = 4;
 
@@ -235,20 +235,23 @@ module shell_base(){
     translate([0,0,-chamfer_diameter/2]) shell_diff(-2);
     scale([1,button_elliptical,1]) cylinder(h=10,d=button_diameter+0.7,$fn=128);
     scale([1,button_elliptical,1]) translate([0,0,8]) cylinder(h=10,d1=button_diameter+0.7,d2=button_diameter*1.5+0.7,$fn=128);
-    translate([-button_diameter+button_diameter/4,0,6]) rotate([90,0,0]) cylinder(h=button_diameter*button_elliptical+0.7,d=2,$fn=4,center=true);
+    //translate([-button_diameter+button_diameter/4,-button_diameter/3,6]) rotate([90,0,0]) cylinder(h=0.35*button_diameter*button_elliptical+0.7,d=4,$fn=4,center=true);
+    //translate([-button_diameter+button_diameter/4,button_diameter/3,6]) rotate([90,0,0]) cylinder(h=0.35*button_diameter*button_elliptical+0.7,d=4,$fn=4,center=true);
+    translate([-button_diameter+button_diameter/4,0,6]) rotate([90,0,0]) cylinder(h=button_diameter*button_elliptical+0.7,d=4,$fn=4,center=true);
   }
 }
+
 
 
 module shell_backa(){
   hull(){
     hull(){
-      translate([channel_width/2+3,-2-button_diameter/2 -button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
-      translate([channel_width/2+3,2+button_diameter/2 + button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
+      translate([channel_width/2+3,-button_diameter/2 -button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
+      translate([channel_width/2+3,button_diameter/2 + button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
     }
     hull(){
-      translate([-channel_width/2-3,-2-button_diameter/2 -button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
-      translate([-channel_width/2-3,2+button_diameter/2 + button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
+      translate([-channel_width/2-3,-button_diameter/2 -button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
+      translate([-channel_width/2-3,button_diameter/2 + button_diameter/4,chamfer_diameter/2]) sphere(d=chamfer_diameter,$fn=chamfer_rez);
     }
   }
 }
