@@ -44,6 +44,7 @@ module button(){
   }
 }
 
+
 module diffcell(){
   union(){
     cylinder(h=3,d=button_diameter + button_diameter/4,$fn=128);
@@ -57,13 +58,17 @@ module diffcell(){
         translate([button_diameter/2  + button_diameter/8,button_diameter/2,0]) cylinder(h=3, d=button_diameter/4,$fn=64);
       }
     }
+    hull(){
+      translate([button_diameter/2  + button_diameter/4,-button_diameter/2,chamfer_diameter/2+1.75/2]) sphere(d=chamfer_diameter,$fn=64);
+      translate([button_diameter/2  + button_diameter/4,button_diameter/2,chamfer_diameter/2+1.75/2]) sphere(d=chamfer_diameter,$fn=64);
+    }
   }
 }
 
 module button_tab(){
     union(){
       difference(){
-        translate([0,-button_diameter/2,0]) cube([button_diameter,button_diameter,3]);
+        translate([0,-button_diameter/2,0]) cube([button_diameter,button_diameter,1.75]);
         hull(){
           translate([0,-button_diameter/2,0]) cylinder(h=3, d=button_diameter/4,$fn=64);    
           translate([button_diameter/2,-button_diameter/2,0]) cylinder(h=3, d=button_diameter/2,$fn=64);
@@ -76,6 +81,8 @@ module button_tab(){
       scale([1,button_elliptical,1]) button();
     }
 }
+
+
 
 module clip_base(tol=0.0){
   hull(){
@@ -315,5 +322,5 @@ module shell(){
 //--Render--------------------------------------------------------------------------------------
 
 clip();
-shell();
+//shell();
 //rotate([180,0,0]) shell();
